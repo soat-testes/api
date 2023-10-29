@@ -6,7 +6,20 @@ on:
       - main
       
 jobs:
+  build-docker-image:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Build Docker Image
+      run: |
+        echo vai gerar a imagem docker
+        echo repository name: ${{ variables.AWS_ECR_REPOSITORY_NAME}}
+        echo region: ${{ variables.AWS_REGION}}
+
   deploy-prod:
+    depends-on: build-docker-image
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'    
     steps:
