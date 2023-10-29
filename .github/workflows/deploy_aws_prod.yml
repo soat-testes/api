@@ -6,14 +6,30 @@ on:
       - main
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Code Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup JDK
+      uses: actions/setup-java@v2
+      with:
+        java-version: '11'
+        distribution: 'temurin'  
+
+    - name: Maven Build
+      run: mvn clean package
+      working-directory: ./
+
   publish-ecr:
+    needs: build
     name: deploy
     runs-on: ubuntu-latest
     permissions:
       id-token: write
       contents: read
     steps:
-
     - name: Checkout
       uses: actions/checkout@v3
 
@@ -28,6 +44,6 @@ jobs:
       run: |
         docker build -t api-soat .
         docker tag api-soat:latest ${{ secrets.AWS_ACCOUNT }}.dkr.ecr.${{ vars.AWS_REGION}}.amazonaws.com/api-soat:latest
-        
+
     - name: Push to ECR
       run: docker push ${{ secrets.AWS_ACCOUNT }}.dkr.ecr.${{ vars.AWS_REGION}}.amazonaws.com/api-soat:latest
