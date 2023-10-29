@@ -13,5 +13,5 @@ jobs:
     - name: Checkout código
       uses: actions/checkout@v2
 
-    - name: Deploy dev
+    - name: Deploy HOMOLOG
       run: echo "Deploy em HOMOLOG"
