@@ -7,7 +7,6 @@ on:
 
 jobs:
   publish-ecr:
-    needs: build
     name: deploy
     runs-on: ubuntu-latest
     permissions:
