@@ -4,27 +4,30 @@ on:
   push:
     branches:
       - main
-      
+
 jobs:
-  build-docker-image:
+  publish-ecr:
+    name: deploy
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-region: ${{ vars.AWS_REGION}}
+        role-to-assume: ${{ secrets.AWS_ROLE }}
+        role-session-name: myGitHubActions
 
     - name: Build Docker Image
       run: |
-        echo vai gerar a imagem docker
-        echo repository name: ${{vars.AWS_ECR_REPOSITORY_NAME}}
-        echo region: ${{ vars.AWS_REGION}}
-
-  deploy-prod:
-    needs: build-docker-image
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'    
-    steps:
-    - name: Checkout código
-      uses: actions/checkout@v2
-
-    - name: Deploy PROD
-      run: echo "Deploy em PROD"
+        docker build -t api-soat .
+        docker tag api-soat:latest ${{ secrets.AWS_ACCOUNT }}.dkr.ecr.${{ vars.AWS_REGION}}.amazonaws.com/api-soat:latest
+        
+    - name: Push to ECR
+      run: docker push ${{ secrets.AWS_ACCOUNT }}.dkr.ecr.${{ vars.AWS_REGION}}.amazonaws.com/api-soat:latest
