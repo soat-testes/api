@@ -1,0 +1,29 @@
+name: PR Pipeline
+
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Code Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup JDK
+      uses: actions/setup-java@v2
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+
+    - name: Maven Build
+      run: mvn clean package
+      working-directory: ./sr
+
+    - name: Test Execution
+      run: mvn test
+      working-directory: ./src
