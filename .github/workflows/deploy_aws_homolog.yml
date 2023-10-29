@@ -6,7 +6,7 @@ on:
       - release
       
 jobs:
-  deploy-dev:
+  deploy-homolog:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/release'    
     steps:
