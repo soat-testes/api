@@ -1,4 +1,4 @@
-name: Deploy AWS DEV
+name: Deploy AWS PROD
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
       
 jobs:
-  deploy-dev:
+  deploy-prod:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'    
     steps:
