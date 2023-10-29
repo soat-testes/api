@@ -1,4 +1,4 @@
-name: Deploy AWS DEV
+name: Deploy AWS HOMOLOG
 
 on:
   push:
