@@ -11,13 +11,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: CCode Checkout
+    - name: Code Checkout
       uses: actions/checkout@v2
 
     - name: Setup JDK
       uses: actions/setup-java@v2
       with:
-        java-version: '11'  # Escolha a versão do Java que você deseja
+        java-version: '11'
+        distribution: 'temurin'
 
     - name: Maven Build
       run: mvn clean package
