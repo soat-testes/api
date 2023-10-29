@@ -15,8 +15,8 @@ jobs:
     - name: Build Docker Image
       run: |
         echo vai gerar a imagem docker
-        echo repository name: $AWS_ECR_REPOSITORY_NAME
-        echo region: $AWS_REGION
+        echo repository name: ${{vars.AWS_ECR_REPOSITORY_NAME}}
+        echo region: ${{ vars.AWS_REGION}}
 
   deploy-prod:
     needs: build-docker-image
