@@ -25,17 +25,23 @@ jobs:
       run: mvn clean package
       working-directory: ./
 
+    #AWS CREDENTIALS
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v4
       with:
         aws-region: ${{ vars.AWS_REGION}}
         role-to-assume: ${{ secrets.AWS_ROLE }}
         role-session-name: myGitHubActions
-
-    - name: Build Docker Image
+    #Private ECR Login
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v2
+    #BUILD, TAG image and PUSH it
+    - name: Build, tag, and push docker image to Amazon ECR
+      env:
+        REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        REPOSITORY: soat-repository
+        IMAGE_TAG: ${{ github.sha }}
       run: |
-        docker build -t api-soat .
-        docker tag api-soat:latest ${{ secrets.AWS_ACCOUNT }}.dkr.ecr.${{ vars.AWS_REGION}}.amazonaws.com/api-soat:latest
-
-    - name: Push to ECR
-      run: docker push ${{ secrets.AWS_ACCOUNT }}.dkr.ecr.${{ vars.AWS_REGION}}.amazonaws.com/api-soat:latest
+        docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
+        docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
