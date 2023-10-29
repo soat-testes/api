@@ -19,7 +19,7 @@ jobs:
         echo region: $AWS_REGION
 
   deploy-prod:
-    depends-on: build-docker-image
+    needs: build-docker-image
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'    
     steps:
