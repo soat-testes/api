@@ -1,0 +1,17 @@
+name: Deploy AWS DEV
+
+on:
+  push:
+    branches:
+      - main
+      
+jobs:
+  deploy-dev:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'    
+    steps:
+    - name: Checkout código
+      uses: actions/checkout@v2
+
+    - name: Deploy dev
+      run: echo "Deploy em PROD"
