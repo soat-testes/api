@@ -65,10 +65,12 @@ jobs:
           role-session-name: myGitHubActions
       #Terraform execution
       - name: Terraform Init
-        run: terraform init ./terraform
+        run: |
+          cd /terraform
+          terraform init
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve ./terraform
+        run: terraform apply -auto-approve
 
       - name: Display Outputs
         run: terraform output
