@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 @RestController
 public class PingController {
 
-    @GetMapping("/health_check")
+    @GetMapping("/ping")
     public ResponseEntity<?> ping() {
         return ResponseEntity.ok("pong");
     }
